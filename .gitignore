@@ -1,0 +1,6 @@
+bin/
+obj/
+*.user
+.vs/
+tests/*.exe
+tests/out_*.txt

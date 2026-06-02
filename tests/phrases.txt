@@ -1,0 +1,10 @@
+std	مرحبا
+std	سلم
+std	مرحبا بالعالم
+std	Hello مرحبا World
+std	اكتب 123 و user@mail.com هنا
+std	السلام عليكم ورحمة الله
+game	مرحبا بالعالم
+game	لا اله الا الله
+game	اكتب 123 و user@mail.com هنا
+game	بسم الله الرحمن الرحيم

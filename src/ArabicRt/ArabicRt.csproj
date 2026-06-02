@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+
+    <PackageId>ArabicRt</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Bandar AlSwyan</Authors>
+    <Title>arabic-rt</Title>
+    <Description>Arabic shaping, BiDi, and un-baking for games, TTS, and real-time clients. Bake logical Arabic into visual presentation forms that render on naive clients, and un-bake back to logical Arabic for text-to-speech. Output is byte-identical to the Python arabic-rt package. Targets netstandard2.0/2.1 (Unity-compatible).</Description>
+    <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/balswyan/arabic-rt-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/balswyan/arabic-rt-dotnet</RepositoryUrl>
+    <PackageTags>arabic;bidi;rtl;reshaper;shaping;tts;unity;games;i18n;text</PackageTags>
+    <PackageReleaseNotes>Initial release: Shape, Fix (bake), Unfix (un-bake), Options + Game preset. Validated byte-for-byte against the Python arabic-rt.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

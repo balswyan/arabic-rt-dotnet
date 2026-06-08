@@ -158,18 +158,62 @@ namespace ArabicRt
             return string.Join("\n",outl);
         }
 
+        // Returns true when every Arabic-containing token in the line is in
+        // presentation form \u2014 i.e. the whole line went through Fix() and needs
+        // full-line reversal in Unfix(). If only *some* tokens are shaped (OCR
+        // artefact / mixed legacy source) we de-shape in place without reversing.
+        private static bool IsArabicCp(int cp)
+            => IsArabicLetter(cp) || (cp>=0xFB50&&cp<=0xFDFF) || (cp>=0xFE70&&cp<=0xFEFF);
+
+        private static bool LineIsFullyShaped(string line)
+        {
+            // Split on both regular space and nbsp (GAME preset uses nbsp as joiner)
+            string normalized = line.Replace('\u00A0',' ');
+            string[] tokens = normalized.Split(' ');
+            int arabicTotal = 0, shapedCount = 0;
+            foreach(var tok in tokens){
+                bool hasAr = false;
+                foreach(char c in tok) if(IsArabicCp(c)){ hasAr=true; break; }
+                if(!hasAr) continue;
+                arabicTotal++;
+                if(IsShaped(tok)) shapedCount++;
+            }
+            // No Arabic tokens at all \u2192 treat as fully shaped (safe: full-line path is a no-op)
+            if(arabicTotal==0) return true;
+            return shapedCount==arabicTotal;
+        }
+
+        private static string Dechar(char ch)
+        {
+            int cp=ch;
+            if(cp==0xFDF2) return AllahStr;
+            string la; if(LamAlefInverse.TryGetValue(cp,out la)) return la;
+            int b; if(ToBase.TryGetValue(cp,out b)) return ((char)b).ToString();
+            if(cp==0x00A0) return " ";
+            return ch.ToString();
+        }
+
+        /// <summary>Reverse <see cref="Fix"/>: baked visual Arabic \u2192 normal logical Arabic.
+        /// Handles partial shaping (OCR artefacts where only some words carry presentation
+        /// forms) by de-shaping those words in place without reversing the whole line.</summary>
         public static string Unfix(string text)
         {
             if(string.IsNullOrEmpty(text)||!IsShaped(text))return text;
             var lines=text.Replace("\r","").Split('\n'); var outl=new List<string>();
-            foreach(var line in lines){ string logical=BidiLine(line,true); var sb=new StringBuilder(logical.Length);
-                foreach(char ch in logical){ int cp=ch;
-                    if(cp==0xFDF2){ sb.Append(AllahStr); continue; }
-                    string la; if(LamAlefInverse.TryGetValue(cp,out la)){ sb.Append(la); continue; }
-                    int b; if(ToBase.TryGetValue(cp,out b)){ sb.Append((char)b); continue; }
-                    if(ch=='\u00A0'){ sb.Append(' '); continue; }
-                    sb.Append(ch); }
-                outl.Add(sb.ToString().Trim()); }
+            foreach(var line in lines){
+                if(LineIsFullyShaped(line)){
+                    // Fully baked (Fix() output): reverse whole line then de-shape.
+                    string logical=BidiLine(line,true);
+                    var sb=new StringBuilder(logical.Length);
+                    foreach(char ch in logical) sb.Append(Dechar(ch));
+                    outl.Add(sb.ToString().Trim());
+                } else {
+                    // Partially shaped: de-shape presentation forms in place, no reversal.
+                    var sb=new StringBuilder(line.Length);
+                    foreach(char ch in line) sb.Append(Dechar(ch));
+                    outl.Add(sb.ToString().Trim());
+                }
+            }
             return string.Join(" ",outl).Trim();
         }
     }

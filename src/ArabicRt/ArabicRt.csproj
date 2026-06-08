@@ -7,7 +7,7 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 
     <PackageId>ArabicRt</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Bandar AlSwyan</Authors>
     <Title>arabic-rt</Title>
     <Description>Arabic shaping, BiDi, and un-baking for games, TTS, and real-time clients. Bake logical Arabic into visual presentation forms that render on naive clients, and un-bake back to logical Arabic for text-to-speech. Output is byte-identical to the Python arabic-rt package. Targets netstandard2.0/2.1 (Unity-compatible).</Description>

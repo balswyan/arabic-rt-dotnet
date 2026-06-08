@@ -1,0 +1,19 @@
+name: Build & Test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.x"
+
+      - name: Build
+        run: dotnet build src/ArabicRt/ArabicRt.csproj -c Release
+
+      - name: Pack (verify package builds)
+        run: dotnet pack src/ArabicRt/ArabicRt.csproj -c Release --no-build -o nupkgs

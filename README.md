@@ -1,4 +1,4 @@
-# arabic-rt (.NET / Unity)
+﻿# arabic-rt (.NET / Unity)
 
 **Arabic shaping, BiDi, and un-baking for games, TTS, and real-time clients** — the C# engine.
 
@@ -10,6 +10,8 @@
 Bake logical Arabic into visual presentation forms that render correctly even on clients that do **no** Arabic processing, and **un-bake** back to clean logical Arabic for text-to-speech, search, or logging. Output is **byte-identical** to the Python [`arabic-rt`](https://pypi.org/project/arabic-rt/) package, so text baked on one side reads on the other.
 
 Targets `netstandard2.0` + `netstandard2.1` → works on .NET, .NET Framework, and **Unity** (Mono / IL2CPP). No dependencies.
+
+![arabic-rt .NET demo](docs/demo.png)
 
 ## Install (NuGet)
 

@@ -5,6 +5,9 @@ on:
     types: [published]
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -16,6 +19,12 @@ jobs:
         with:
           dotnet-version: "8.x"
 
+      - name: NuGet login (Trusted Publishing)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: balswyan
+
       - name: Build
         run: dotnet build src/ArabicRt/ArabicRt.csproj -c Release
 
@@ -23,4 +32,4 @@ jobs:
         run: dotnet pack src/ArabicRt/ArabicRt.csproj -c Release --no-build -o nupkgs
 
       - name: Push to NuGet
-        run: dotnet nuget push nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push nupkgs/*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

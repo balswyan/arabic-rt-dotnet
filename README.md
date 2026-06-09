@@ -11,6 +11,8 @@ Bake logical Arabic into visual presentation forms that render correctly even on
 
 Targets `netstandard2.0` + `netstandard2.1` → works on .NET, .NET Framework, and **Unity** (Mono / IL2CPP). No dependencies.
 
+![Logical vs visual-order Arabic — the bytes differ even when the screen looks identical. Fix() bakes to visual order; Unfix() restores logical order](docs/pipeline.png)
+
 ![arabic-rt .NET demo](docs/demo.png)
 
 ## Install (NuGet)
